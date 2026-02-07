@@ -2,6 +2,16 @@
 
 A comprehensive solution for building an Asterisk-based inbound SIP call receiver with IVR (Interactive Voice Response) integration and real-time revenue tracking dashboard.
 
+## 🚀 Quick Start - One Command!
+
+**Already have Asterisk installed?** Start everything with just:
+
+```bash
+./start-all.sh
+```
+
+See [ONE_COMMAND.md](ONE_COMMAND.md) for details.
+
 ## Features
 
 - **Asterisk SIP Integration**: Handles inbound SIP calls via Asterisk Manager Interface (AMI)
@@ -38,14 +48,33 @@ A comprehensive solution for building an Asterisk-based inbound SIP call receive
 
 ## Installation
 
-### 1. Clone the Repository
+### Quick Installation (One Command)
+
+If you already have Asterisk installed and configured:
+
+```bash
+./start-all.sh
+```
+
+This will:
+- ✅ Install all dependencies
+- ✅ Setup environment
+- ✅ Start backend and frontend
+- ✅ Connect to Asterisk AMI
+- ✅ Open dashboard on http://localhost:3000
+
+📖 **See [ONE_COMMAND.md](ONE_COMMAND.md) for complete guide**
+
+### Manual Installation
+
+#### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
 cd Gulf-Premium-Telecom
 ```
 
-### 2. Install Backend Dependencies
+#### 2. Install Backend Dependencies
 
 ```bash
 npm install
