@@ -3,18 +3,34 @@
 ## Date: 2026-02-07
 
 ### Summary
-Updated Next.js from version 14.0.3 to 15.0.8 to address multiple critical security vulnerabilities.
+Updated Next.js from version 14.0.3 to 15.2.3 to address all known critical security vulnerabilities.
+
+### Update History
+- **Initial Update**: 14.0.3 → 15.0.8 (Partial fix)
+- **Final Update**: 15.0.8 → 15.2.3 (All vulnerabilities patched)
 
 ---
 
 ## Vulnerabilities Addressed
 
-### 1. HTTP Request Deserialization DoS (CRITICAL)
+### 1. DoS via Cache Poisoning (HIGH)
+- **Affected versions**: >= 15.0.4-canary.51, < 15.1.8
+- **Severity**: High
+- **Impact**: Denial of Service through cache poisoning
+- **Fixed in**: 15.1.8 (superseded by 15.2.3)
+
+### 2. Authorization Bypass in Middleware (CRITICAL)
+- **Affected versions**: >= 15.0.0, < 15.2.3
+- **Severity**: Critical
+- **Impact**: Authorization bypass in Next.js Middleware
+- **Fixed in**: 15.2.3
+
+### 3. HTTP Request Deserialization DoS (CRITICAL)
 - **CVE**: Multiple CVEs related to React Server Components
 - **Affected versions**: >= 13.0.0, < 15.0.8
 - **Severity**: High
 - **Impact**: Denial of Service attacks possible through HTTP request deserialization
-- **Fixed in**: 15.0.8
+- **Fixed in**: 15.0.8 (superseded by 15.2.3)
 
 ### 2. Server Components DoS - Incomplete Fix (HIGH)
 - **Affected versions**: >= 13.3.1-canary.0, < 14.2.35
@@ -66,11 +82,15 @@ Updated Next.js from version 14.0.3 to 15.0.8 to address multiple critical secur
 ```json
 {
   "dependencies": {
-    "next": "15.0.8",
-    "eslint-config-next": "15.0.8"
+    "next": "15.2.3",
+    "eslint-config-next": "15.2.3"
   }
 }
 ```
+
+**Update Path:**
+- 14.0.3 → 15.0.8 (Initial security fix)
+- 15.0.8 → 15.2.3 (Complete security fix)
 
 ---
 
@@ -83,7 +103,7 @@ If you have already deployed this application with Next.js 14.0.3, please:
 1. **Update immediately:**
    ```bash
    cd client
-   npm install next@15.0.8 eslint-config-next@15.0.8
+   npm install next@15.2.3 eslint-config-next@15.2.3
    npm run build
    ```
 
@@ -97,12 +117,12 @@ If you have already deployed this application with Next.js 14.0.3, please:
 3. **Verify the update:**
    ```bash
    npm list next
-   # Should show: next@15.0.8
+   # Should show: next@15.2.3
    ```
 
 ### For New Installations
 
-New installations using the updated package.json will automatically use the secure version 15.0.8.
+New installations using the updated package.json will automatically use the secure version 15.2.3.
 
 ---
 
@@ -186,7 +206,7 @@ After updating, test the following:
 
 ## Version Compatibility
 
-Next.js 15.0.8 is compatible with:
+Next.js 15.2.3 is compatible with:
 - React 18.2.0 ✅
 - Node.js 16+ ✅
 - Our existing codebase ✅
@@ -214,11 +234,17 @@ For security concerns or questions:
 
 ## Changelog
 
-### 2026-02-07
+### 2026-02-07 (Update 2)
+- **SECURITY**: Updated Next.js from 15.0.8 to 15.2.3
+- **SECURITY**: Fixed remaining cache poisoning vulnerability
+- **SECURITY**: Fixed middleware authorization bypass
+- **STATUS**: All known vulnerabilities patched ✅
+
+### 2026-02-07 (Update 1)
 - **SECURITY**: Updated Next.js from 14.0.3 to 15.0.8
 - **SECURITY**: Updated eslint-config-next from 14.0.3 to 15.0.8
 - **DOCS**: Updated all documentation to reflect new version
-- **STATUS**: All vulnerabilities patched ✅
+- **STATUS**: Partial vulnerabilities patched
 
 ---
 
