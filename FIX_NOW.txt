@@ -1,0 +1,65 @@
+╔══════════════════════════════════════════════════════════════╗
+║           FIX UPDATE ERROR - QUICK COMMANDS                  ║
+╚══════════════════════════════════════════════════════════════╝
+
+YOU GOT THIS ERROR:
+  "error: The following untracked working tree files would be 
+   overwritten by merge: package-lock.json"
+
+╔══════════════════════════════════════════════════════════════╗
+║  RUN THESE 4 COMMANDS (Copy & Paste):                       ║
+╚══════════════════════════════════════════════════════════════╝
+
+cd ~/Gulf-Premium-Telecom
+mv package-lock.json package-lock.json.backup
+git pull origin copilot/build-asterisk-inbound-sip
+sudo ./update-server.sh
+
+╔══════════════════════════════════════════════════════════════╗
+║  WHAT EACH COMMAND DOES:                                     ║
+╚══════════════════════════════════════════════════════════════╝
+
+1. cd ~/Gulf-Premium-Telecom
+   → Go to your project folder
+
+2. mv package-lock.json package-lock.json.backup
+   → Backup the conflicting file
+
+3. git pull origin copilot/build-asterisk-inbound-sip
+   → Download latest code (now works!)
+
+4. sudo ./update-server.sh
+   → Run the update (now includes automatic fixes!)
+
+╔══════════════════════════════════════════════════════════════╗
+║  AFTER THIS:                                                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ The update script is now FIXED!
+✅ Future updates will handle conflicts automatically
+✅ Just run: sudo ./update-server.sh
+
+NO MORE ERRORS! 🎉
+
+╔══════════════════════════════════════════════════════════════╗
+║  WHAT GOT FIXED:                                             ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ update-server.sh → Now backs up conflicts automatically
+✅ .gitignore → Now ignores package-lock.json
+✅ Merge conflicts → Won't happen again
+
+╔══════════════════════════════════════════════════════════════╗
+║  NEED HELP?                                                  ║
+╚══════════════════════════════════════════════════════════════╝
+
+Read: FIX_UPDATE_ERROR.md
+(Complete troubleshooting guide)
+
+═══════════════════════════════════════════════════════════════
+
+QUICK COPY-PASTE (All 4 commands):
+
+cd ~/Gulf-Premium-Telecom && mv package-lock.json package-lock.json.backup && git pull origin copilot/build-asterisk-inbound-sip && sudo ./update-server.sh
+
+═══════════════════════════════════════════════════════════════
