@@ -4,14 +4,31 @@ Complete step-by-step guide to deploy Gulf Premium Telecom on your VPS (167.172.
 
 ## Quick Setup (Copy & Paste)
 
-If you just want to get started fast, use the automated installer:
+### Option 1: Asterisk Already Installed (Recommended - Fast!)
+
+If Asterisk is already installed on your VPS, use the quick installer:
 
 ```bash
-# Run this one command:
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install-quick.sh | sudo bash
+```
+
+**Time:** 5-10 minutes  
+**Installs:** Node.js, MongoDB, Application, Nginx, Services
+
+### Option 2: Fresh VPS (Complete Installation)
+
+If you need to install everything including Asterisk:
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install.sh | sudo bash
 ```
 
-**OR** follow the detailed manual steps below.
+**Time:** 20-30 minutes  
+**Installs:** Node.js, MongoDB, Asterisk (compiled), Application, Nginx, Services
+
+### Option 3: Manual Installation
+
+Follow the detailed manual steps below if you prefer step-by-step control.
 
 ---
 

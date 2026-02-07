@@ -4,13 +4,25 @@ A comprehensive solution for building an Asterisk-based inbound SIP call receive
 
 ## 🚀 VPS Deployment - One Command Installation!
 
-**New VPS? Deploy everything automatically:**
+### Option 1: Asterisk Already Installed (Fast - 5-10 min)
+
+**Already have Asterisk on your VPS?** Use the quick installer:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install-quick.sh | sudo bash
+```
+
+This installs Node.js, MongoDB, the application, and configures everything!
+
+### Option 2: Fresh VPS (Complete - 20-30 min)
+
+**New VPS without Asterisk?** Use the full installer:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install.sh | sudo bash
 ```
 
-This installs Node.js, MongoDB, Asterisk, configures everything, and starts all services!
+This installs everything including compiling Asterisk from source.
 
 See [VPS_SETUP.md](VPS_SETUP.md) for detailed manual steps.
 
