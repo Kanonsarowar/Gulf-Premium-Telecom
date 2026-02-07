@@ -9,13 +9,23 @@
 
 ## THE COMMAND YOU NEED
 
-Since Asterisk is already installed on your VPS, just run this **ONE COMMAND**:
+Since Asterisk is already installed on your VPS, use **ONE OF THESE METHODS**:
 
+### Method 1: Direct Install (One Command)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install-quick.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install-quick.sh | sudo bash
+```
+
+### Method 2: Clone & Run (RECOMMENDED - More Reliable)
+```bash
+git clone -b copilot/build-asterisk-inbound-sip https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
+cd Gulf-Premium-Telecom
+sudo ./vps-install-quick.sh
 ```
 
 That's it! Everything will be installed and configured automatically in 5-10 minutes.
+
+> **Note:** Files are currently on branch `copilot/build-asterisk-inbound-sip`. After PR merge, you can use `/main/` in the URL.
 
 ---
 
@@ -48,8 +58,17 @@ ssh your-username@167.172.170.88
 ```
 
 ### 2. Run the Installer
+
+**Option A: Direct curl**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install-quick.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install-quick.sh | sudo bash
+```
+
+**Option B: Clone first (recommended)**
+```bash
+git clone -b copilot/build-asterisk-inbound-sip https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
+cd Gulf-Premium-Telecom
+sudo ./vps-install-quick.sh
 ```
 
 ### 3. Wait for Completion

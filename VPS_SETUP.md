@@ -9,7 +9,7 @@ Complete step-by-step guide to deploy Gulf Premium Telecom on your VPS (167.172.
 If Asterisk is already installed on your VPS, use the quick installer:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install-quick.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install-quick.sh | sudo bash
 ```
 
 **Time:** 5-10 minutes  
@@ -20,7 +20,7 @@ curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/m
 If you need to install everything including Asterisk:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install.sh | sudo bash
 ```
 
 **Time:** 20-30 minutes  

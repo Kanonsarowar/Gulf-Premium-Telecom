@@ -4,12 +4,20 @@ A comprehensive solution for building an Asterisk-based inbound SIP call receive
 
 ## 🚀 VPS Deployment - One Command Installation!
 
+> **IMPORTANT:** For working commands right now, see **[DEPLOY_NOW.md](DEPLOY_NOW.md)**
+
 ### Option 1: Asterisk Already Installed (Fast - 5-10 min)
 
 **Already have Asterisk on your VPS?** Use the quick installer:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install-quick.sh | sudo bash
+# Method 1: Direct install
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install-quick.sh | sudo bash
+
+# Method 2: Clone first (recommended)
+git clone -b copilot/build-asterisk-inbound-sip https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
+cd Gulf-Premium-Telecom
+sudo ./vps-install-quick.sh
 ```
 
 This installs Node.js, MongoDB, the application, and configures everything!
@@ -19,18 +27,26 @@ This installs Node.js, MongoDB, the application, and configures everything!
 **New VPS without Asterisk?** Use the full installer:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install.sh | sudo bash
+# Method 1: Direct install
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install.sh | sudo bash
+
+# Method 2: Clone first (recommended)
+git clone -b copilot/build-asterisk-inbound-sip https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
+cd Gulf-Premium-Telecom
+sudo ./vps-install.sh
 ```
 
 This installs everything including compiling Asterisk from source.
 
-See [VPS_SETUP.md](VPS_SETUP.md) for detailed manual steps.
+See [VPS_SETUP.md](VPS_SETUP.md) for detailed manual steps or [DEPLOY_NOW.md](DEPLOY_NOW.md) for immediate setup.
 
-## 🎯 Quick Start - Already Have Asterisk?
+## 🎯 Quick Start - Local Development
 
-**Already have Asterisk installed?** Start everything with just:
+**Already have Asterisk installed locally?** Start everything with just:
 
 ```bash
+git clone -b copilot/build-asterisk-inbound-sip https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
+cd Gulf-Premium-Telecom
 ./start-all.sh
 ```
 
