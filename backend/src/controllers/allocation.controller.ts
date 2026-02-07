@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '../utils/prisma';
 import { z } from 'zod';
+import asteriskConfig from '../utils/asterisk';
 
 const createAllocationSchema = z.object({
   allocatedNumber: z.string().min(1),
@@ -77,6 +78,22 @@ export const createAllocation = async (req: Request, res: Response) => {
       },
     });
 
+    // Automatically configure Asterisk for IP-to-IP routing if destination is linked
+    if (allocation.destination && allocation.status === 'active') {
+      try {
+        await asteriskConfig.addDIDToDialplan({
+          did: allocation.allocatedNumber,
+          destination: allocation.destination.destinationNumber,
+          routingType: allocation.destination.routingType,
+          context: 'from-trunk',
+        });
+        console.log(`✅ Asterisk configured for DID: ${allocation.allocatedNumber}`);
+      } catch (asteriskError: any) {
+        console.warn(`⚠️ Could not configure Asterisk: ${asteriskError.message}`);
+        // Continue even if Asterisk config fails - allocation is still created
+      }
+    }
+
     res.status(201).json({ success: true, data: allocation });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -121,6 +138,21 @@ export const deleteAllocation = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    // Get allocation before deleting to remove from Asterisk
+    const allocation = await prisma.allocationNumber.findUnique({
+      where: { id },
+    });
+
+    if (allocation) {
+      // Remove from Asterisk configuration
+      try {
+        await asteriskConfig.removeDIDFromDialplan(allocation.allocatedNumber);
+        console.log(`✅ Removed DID from Asterisk: ${allocation.allocatedNumber}`);
+      } catch (asteriskError: any) {
+        console.warn(`⚠️ Could not remove from Asterisk: ${asteriskError.message}`);
+      }
+    }
+
     await prisma.allocationNumber.delete({
       where: { id },
     });
@@ -157,6 +189,21 @@ export const linkAllocationToDestination = async (req: Request, res: Response) =
         customer: true,
       },
     });
+
+    // Automatically configure Asterisk for IP-to-IP routing when linking
+    if (allocation.status === 'active' && allocation.destination) {
+      try {
+        await asteriskConfig.addDIDToDialplan({
+          did: allocation.allocatedNumber,
+          destination: allocation.destination.destinationNumber,
+          routingType: allocation.destination.routingType,
+          context: 'from-trunk',
+        });
+        console.log(`✅ Asterisk configured for linked DID: ${allocation.allocatedNumber}`);
+      } catch (asteriskError: any) {
+        console.warn(`⚠️ Could not configure Asterisk: ${asteriskError.message}`);
+      }
+    }
 
     res.json({ success: true, data: allocation });
   } catch (error: any) {

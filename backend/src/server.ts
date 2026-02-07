@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import allocationRoutes from './routes/allocation.routes';
 import destinationRoutes from './routes/destination.routes';
+import systemRoutes from './routes/system.routes';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.get('/health', (req, res) => {
 // Routes
 app.use('/api/allocations', allocationRoutes);
 app.use('/api/destinations', destinationRoutes);
+app.use('/api/system', systemRoutes);
 
 // Error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -35,4 +37,5 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📞 Asterisk auto-configuration: enabled`);
 });

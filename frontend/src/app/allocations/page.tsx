@@ -44,6 +44,11 @@ export default function AllocationsPage() {
       });
       setShowCreateForm(false);
       setNewAllocation({ allocatedNumber: '', destinationId: '', status: 'active' });
+      alert(`✅ Allocation number ${newAllocation.allocatedNumber} created successfully!\n\n${
+        newAllocation.destinationId 
+          ? '🎯 Asterisk has been automatically configured for IP-to-IP routing.'
+          : 'ℹ️  Link to a destination to enable Asterisk routing.'
+      }`);
       loadData();
     } catch (error: any) {
       alert(`Failed to create allocation: ${error.message}`);
@@ -53,6 +58,7 @@ export default function AllocationsPage() {
   async function handleLinkDestination(allocationId: string, destinationId: string) {
     try {
       await linkAllocation(allocationId, destinationId);
+      alert('✅ Allocation linked to destination successfully!\n\n🎯 Asterisk has been automatically configured for IP-to-IP routing.');
       loadData();
     } catch (error: any) {
       alert(`Failed to link allocation: ${error.message}`);

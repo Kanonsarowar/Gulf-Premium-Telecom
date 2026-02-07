@@ -31,6 +31,42 @@ export interface Destination {
   trunk?: any;
 }
 
+export interface SystemStatus {
+  asterisk: {
+    connected: boolean;
+    status: string;
+  };
+  database: {
+    connected: boolean;
+    status: string;
+  };
+  statistics: {
+    totalAllocations: number;
+    activeAllocations: number;
+    totalDestinations: number;
+  };
+  timestamp: string;
+}
+
+export async function getSystemStatus(): Promise<SystemStatus> {
+  const res = await fetch(`${API_URL}/api/system/status`, {
+    cache: 'no-store',
+  });
+  const data = await res.json();
+  return data.data;
+}
+
+export async function syncToAsterisk(): Promise<any> {
+  const res = await fetch(`${API_URL}/api/system/sync-asterisk`, {
+    method: 'POST',
+  });
+  const data = await res.json();
+  if (!data.success) {
+    throw new Error(data.error || 'Failed to sync');
+  }
+  return data;
+}
+
 export async function getAllocations(): Promise<Allocation[]> {
   const res = await fetch(`${API_URL}/api/allocations`, {
     cache: 'no-store',

@@ -1,4 +1,30 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { getSystemStatus, type SystemStatus } from '@/lib/api';
+
 export default function HomePage() {
+  const [systemStatus, setSystemStatus] = useState<SystemStatus | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadStatus();
+    // Refresh status every 30 seconds
+    const interval = setInterval(loadStatus, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  async function loadStatus() {
+    try {
+      const status = await getSystemStatus();
+      setSystemStatus(status);
+    } catch (error) {
+      console.error('Failed to load system status:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="border-4 border-dashed border-gray-200 rounded-lg p-8">
@@ -6,10 +32,10 @@ export default function HomePage() {
           Welcome to Gulf Premium Telecom IPRN
         </h2>
         <p className="text-gray-600 mb-6">
-          Manage your allocation numbers and inbound destinations with Asterisk integration.
+          Manage your allocation numbers and inbound destinations with automatic Asterisk integration.
         </p>
         
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-5">
               <div className="flex items-center">
@@ -34,7 +60,10 @@ export default function HomePage() {
                       Allocation Numbers
                     </dt>
                     <dd className="text-lg font-medium text-gray-900">
-                      <a href="/allocations" className="text-blue-600 hover:text-blue-500">
+                      {systemStatus ? `${systemStatus.statistics.activeAllocations}/${systemStatus.statistics.totalAllocations} Active` : '-'}
+                    </dd>
+                    <dd className="text-sm text-blue-600">
+                      <a href="/allocations" className="hover:text-blue-500">
                         Manage →
                       </a>
                     </dd>
@@ -68,7 +97,10 @@ export default function HomePage() {
                       Inbound Destinations
                     </dt>
                     <dd className="text-lg font-medium text-gray-900">
-                      <a href="/destinations" className="text-green-600 hover:text-green-500">
+                      {systemStatus ? systemStatus.statistics.totalDestinations : '-'}
+                    </dd>
+                    <dd className="text-sm text-green-600">
+                      <a href="/destinations" className="hover:text-green-500">
                         Manage →
                       </a>
                     </dd>
@@ -83,7 +115,7 @@ export default function HomePage() {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <svg
-                    className="h-6 w-6 text-purple-600"
+                    className={`h-6 w-6 ${systemStatus?.asterisk.connected ? 'text-green-600' : 'text-red-600'}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -99,13 +131,42 @@ export default function HomePage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">
-                      Asterisk Status
+                      Asterisk PBX
                     </dt>
-                    <dd className="text-lg font-medium text-green-600">
-                      Active
+                    <dd className={`text-lg font-medium ${systemStatus?.asterisk.connected ? 'text-green-600' : 'text-red-600'}`}>
+                      {loading ? 'Checking...' : (systemStatus?.asterisk.connected ? 'Online' : 'Offline')}
+                    </dd>
+                    <dd className="text-sm text-gray-500">
+                      Auto-configured
                     </dd>
                   </dl>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-blue-800">
+                Automatic Asterisk Configuration
+              </h3>
+              <div className="mt-2 text-sm text-blue-700">
+                <p>
+                  When you create an allocation number from the frontend, it automatically:
+                </p>
+                <ul className="list-disc list-inside mt-2 space-y-1">
+                  <li>Adds the number to the backend database</li>
+                  <li>Configures Asterisk dialplan for inbound routing</li>
+                  <li>Sets up IP-to-IP routing rules</li>
+                  <li>Reloads Asterisk configuration automatically</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -117,8 +178,8 @@ export default function HomePage() {
             <li>Create an inbound destination with routing configuration</li>
             <li>Create an allocation number</li>
             <li>Link the allocation number to the inbound destination</li>
-            <li>Configure your Asterisk PBX to use the AGI server</li>
-            <li>Start receiving calls!</li>
+            <li>Asterisk is automatically configured for IP-to-IP routing!</li>
+            <li>Start receiving calls on your allocated numbers</li>
           </ol>
         </div>
       </div>
