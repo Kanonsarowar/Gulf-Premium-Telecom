@@ -18,21 +18,26 @@ THE SOLUTION:
 WORKING COMMANDS FOR YOUR VPS (Asterisk already installed):
 ══════════════════════════════════════════════════════════════════════════
 
-METHOD 1: Clone Repository (RECOMMENDED)
------------------------------------------
+METHOD 1: Clone Repository Then Install (RECOMMENDED)
+------------------------------------------------------
 git clone -b copilot/build-asterisk-inbound-sip \
   https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
 
 cd Gulf-Premium-Telecom
 
-sudo ./vps-install-quick.sh
+sudo ./install-from-here.sh
+    ⬆️ NEW! Works from your current directory
 
 
-METHOD 2: Direct Curl
-----------------------
+METHOD 2: Direct Curl (Advanced)
+---------------------------------
 curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/\
 Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/\
 vps-install-quick.sh | sudo bash
+
+
+💡 TIP: If you already cloned the repo, use Method 1 with ./install-from-here.sh
+    This fixes the "No such file or directory" error!
 
 ══════════════════════════════════════════════════════════════════════════
 
