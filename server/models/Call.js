@@ -17,6 +17,16 @@ const CallSchema = new mongoose.Schema({
     index: true
   },
   callerName: String,
+  // Reseller assignment
+  resellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    index: true
+  },
+  resellerCode: {
+    type: String,
+    index: true
+  },
   direction: {
     type: String,
     enum: ['inbound', 'outbound'],

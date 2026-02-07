@@ -7,6 +7,8 @@ require('dotenv').config();
 const asteriskService = require('./services/asteriskService');
 const callRoutes = require('./routes/callRoutes');
 const revenueRoutes = require('./routes/revenueRoutes');
+const { router: authRoutes } = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const db = require('./config/database');
 
 const app = express();
@@ -19,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/calls', callRoutes);
 app.use('/api/revenue', revenueRoutes);
 
