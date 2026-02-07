@@ -1,0 +1,77 @@
+╔════════════════════════════════════════════════════════════╗
+║         🚨 FIX 502 BAD GATEWAY ERROR - QUICK GUIDE        ║
+╚════════════════════════════════════════════════════════════╝
+
+Your dashboard showing 502 error? Fix it in 10 seconds!
+
+┌────────────────────────────────────────────────────────────┐
+│ QUICK FIX (Run these commands):                            │
+└────────────────────────────────────────────────────────────┘
+
+cd ~/Gulf-Premium-Telecom
+git pull origin copilot/build-asterisk-inbound-sip
+sudo ./quick-fix-502.sh
+
+✅ Done! Dashboard should work now: http://167.172.170.88
+
+┌────────────────────────────────────────────────────────────┐
+│ EVEN FASTER (If you already have the files):              │
+└────────────────────────────────────────────────────────────┘
+
+sudo systemctl restart mongod
+sudo systemctl restart gulf-telecom-backend
+
+✅ Wait 5 seconds, then check: http://167.172.170.88
+
+┌────────────────────────────────────────────────────────────┐
+│ WHAT CAUSES 502 ERROR?                                     │
+└────────────────────────────────────────────────────────────┘
+
+Most common:
+  ❌ Backend service stopped
+  ❌ MongoDB not running
+  ❌ Backend crashed
+  ❌ Port 3001 not listening
+
+The scripts fix all of these automatically!
+
+┌────────────────────────────────────────────────────────────┐
+│ DIAGNOSTIC (Want to see what's wrong?):                    │
+└────────────────────────────────────────────────────────────┘
+
+sudo ./fix-502-error.sh
+
+This will show you:
+  • Backend service status
+  • Port 3001 listening?
+  • MongoDB status
+  • Recent errors
+  • API test
+
+┌────────────────────────────────────────────────────────────┐
+│ NEED DETAILED HELP?                                        │
+└────────────────────────────────────────────────────────────┘
+
+Read: FIX_502_ERROR.md
+
+Contains:
+  • Complete troubleshooting guide
+  • All common errors and fixes
+  • Step-by-step instructions
+  • Prevention tips
+
+┌────────────────────────────────────────────────────────────┐
+│ VERIFICATION                                               │
+└────────────────────────────────────────────────────────────┘
+
+After fix, test:
+
+curl http://localhost:3001/api/health
+
+Should show: {"status":"ok"}
+
+Then access: http://167.172.170.88
+
+╔════════════════════════════════════════════════════════════╗
+║  SUMMARY: Run "sudo ./quick-fix-502.sh" and you're done!  ║
+╚════════════════════════════════════════════════════════════╝
