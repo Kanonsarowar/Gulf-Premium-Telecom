@@ -2,7 +2,19 @@
 
 A comprehensive solution for building an Asterisk-based inbound SIP call receiver with IVR (Interactive Voice Response) integration and real-time revenue tracking dashboard.
 
-## 🚀 Quick Start - One Command!
+## 🚀 VPS Deployment - One Command Installation!
+
+**New VPS? Deploy everything automatically:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/main/vps-install.sh | sudo bash
+```
+
+This installs Node.js, MongoDB, Asterisk, configures everything, and starts all services!
+
+See [VPS_SETUP.md](VPS_SETUP.md) for detailed manual steps.
+
+## 🎯 Quick Start - Already Have Asterisk?
 
 **Already have Asterisk installed?** Start everything with just:
 
