@@ -3,7 +3,8 @@
 # Gulf Premium Telecom - One-Command Server Update Script
 # Usage: sudo ./update-server.sh
 
-set -e  # Exit on error
+# Don't exit on error for git operations
+# set -e  
 
 echo "🚀 Gulf Premium Telecom - Server Update"
 echo "========================================"
@@ -28,11 +29,34 @@ git fetch origin
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "   Current branch: $CURRENT_BRANCH"
 
-if git pull origin "$CURRENT_BRANCH"; then
-    echo "   ✅ Code updated successfully"
+# Check for untracked files that might conflict
+echo "   🔍 Checking for conflicts..."
+if ! git pull origin "$CURRENT_BRANCH" 2>/tmp/git_error.txt; then
+    if grep -q "untracked working tree files would be overwritten" /tmp/git_error.txt; then
+        echo "   ⚠️  Found conflicting files, backing up and retrying..."
+        
+        # Backup package-lock.json if it exists
+        if [ -f "package-lock.json" ]; then
+            mv package-lock.json package-lock.json.backup
+            echo "   📦 Backed up package-lock.json"
+        fi
+        
+        # Try pull again
+        if git pull origin "$CURRENT_BRANCH"; then
+            echo "   ✅ Code updated successfully (after resolving conflicts)"
+        else
+            echo "   ❌ Pull failed even after cleanup"
+            echo "   💡 You may need to manually resolve conflicts"
+        fi
+    else
+        echo "   ⚠️  Pull failed with different error:"
+        cat /tmp/git_error.txt
+        echo "   Continuing with existing code..."
+    fi
 else
-    echo "   ⚠️  Pull failed, continuing anyway..."
+    echo "   ✅ Code updated successfully"
 fi
+rm -f /tmp/git_error.txt
 echo ""
 
 # Step 2: Install backend dependencies
