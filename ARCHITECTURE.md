@@ -228,7 +228,7 @@ Gulf Premium Telecom is a comprehensive telecom solution built around Asterisk P
 ### 3. Frontend Dashboard (Next.js)
 
 **Technology Stack:**
-- Next.js 14
+- Next.js 15
 - React 18
 - Tailwind CSS - Styling
 - Axios - HTTP client

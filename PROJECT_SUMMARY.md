@@ -102,7 +102,7 @@ Successfully implemented a complete Asterisk-based inbound SIP call receiver wit
 
 ### Technology Stack
 - **Backend**: Node.js 18, Express.js 4.18
-- **Frontend**: Next.js 14, React 18, Tailwind CSS 3.3
+- **Frontend**: Next.js 15, React 18, Tailwind CSS 3.3
 - **Database**: MongoDB 6.0 with Mongoose 8.0
 - **PBX**: Asterisk 16+ with AMI
 - **Real-time**: WebSocket (ws 8.14)

@@ -252,7 +252,7 @@
 - **Utilities**: dotenv, moment, uuid
 
 ### Frontend Stack
-- **Framework**: Next.js 14.0
+- **Framework**: Next.js 15.0
 - **UI Library**: React 18.2
 - **Styling**: Tailwind CSS 3.3
 - **HTTP Client**: Axios 1.6
