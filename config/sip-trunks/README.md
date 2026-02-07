@@ -134,6 +134,8 @@ Ensure `/etc/asterisk/rtp.conf` contains:
 [general]
 rtpstart=10000
 rtpend=20000
+rtcpinterval=5000    ; RTCP interval in milliseconds (recommended for monitoring)
+strictrtp=yes        ; Enable strict RTP for security (drop unexpected RTP packets)
 ```
 
 ## High-Volume Considerations

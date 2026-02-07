@@ -2,7 +2,7 @@
 # Configuration Validation Test Script
 # Tests the IP supplier configuration for Gulf Premium Telecom
 
-set -e
+set -euo pipefail
 
 echo "=================================="
 echo "Gulf Premium Telecom Config Tests"
