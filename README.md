@@ -5,12 +5,15 @@ A comprehensive solution for building an Asterisk-based inbound SIP call receive
 ## Features
 
 - **Asterisk SIP Integration**: Handles inbound SIP calls via Asterisk Manager Interface (AMI)
+- **Multiple SIP Trunks**: Pre-configured support for 8 supplier trunks
 - **IVR System**: Configurable Interactive Voice Response for call routing
 - **Real-time Dashboard**: WebSocket-powered live call monitoring
 - **Revenue Tracking**: Automatic revenue calculation and analytics
 - **Call History**: Complete call records with detailed statistics
 - **Active Call Management**: Monitor and control active calls in real-time
 - **Analytics & Reporting**: Hourly, daily, and caller-based revenue reports
+- **Multi-Codec Support**: G.729, G.711 (ulaw/alaw), GSM
+- **E.164 Number Format**: International number format support
 
 ## Architecture
 
