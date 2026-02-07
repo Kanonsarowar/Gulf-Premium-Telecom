@@ -16,8 +16,17 @@ The installer expected files at /opt/gulf-telecom/ but you
 cloned to ~/Gulf-Premium-Telecom - wrong path!
 
 ┌─────────────────────────────────────────────────────────────────┐
-│                      THE SOLUTION (2 STEPS)                     │
+│                      THE SOLUTION (3 STEPS)                     │
 └─────────────────────────────────────────────────────────────────┘
+
+STEP 0: Pull the latest files FIRST!
+─────────────────────────────────────
+cd ~/Gulf-Premium-Telecom
+git pull origin copilot/build-asterisk-inbound-sip
+
+(If you get "command not found" for install-from-here.sh, 
+ you need to do this step first!)
+
 
 STEP 1: Go to your repository
 ──────────────────────────────

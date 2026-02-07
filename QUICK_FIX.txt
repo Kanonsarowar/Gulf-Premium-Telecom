@@ -14,18 +14,25 @@ You cloned the repo to ~/Gulf-Premium-Telecom but the script
 expected it at /opt/gulf-telecom/ - paths didn't match!
 
 ═══════════════════════════════════════════════════════════════════
-  THE FIX - TWO SIMPLE COMMANDS
+  THE FIX - SIMPLE COMMANDS
 ═══════════════════════════════════════════════════════════════════
 
 1. Go to your repository directory:
    
    cd ~/Gulf-Premium-Telecom
 
-2. Run the NEW installer (works from current directory):
+2. Pull the latest files (IMPORTANT if you cloned earlier):
+   
+   git pull origin copilot/build-asterisk-inbound-sip
+
+3. Run the NEW installer (works from current directory):
    
    sudo ./install-from-here.sh
 
 ═══════════════════════════════════════════════════════════════════
+
+📝 NOTE: If you get "command not found" for install-from-here.sh,
+         you MUST do step 2 (git pull) to get the latest files!
 
 THAT'S IT! The new script will:
 

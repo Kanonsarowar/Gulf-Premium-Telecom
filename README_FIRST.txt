@@ -28,6 +28,11 @@ cd Gulf-Premium-Telecom
 sudo ./install-from-here.sh
     ⬆️ NEW! Works from your current directory
 
+⚠️  IMPORTANT: If you cloned earlier, pull latest files first:
+   cd ~/Gulf-Premium-Telecom
+   git pull origin copilot/build-asterisk-inbound-sip
+   sudo ./install-from-here.sh
+
 
 METHOD 2: Direct Curl (Advanced)
 ---------------------------------
