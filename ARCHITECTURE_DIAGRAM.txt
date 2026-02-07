@@ -1,0 +1,188 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    GULF PREMIUM TELECOM - CALL FLOW                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+                         INBOUND SIP CALLS FROM SUPPLIERS
+                                        │
+                                        │
+        ┌───────────────────────────────┼───────────────────────────────┐
+        │                               │                               │
+        │                               │                               │
+   [GROUP 1]                       [GROUP 2]                      [GROUP 3]
+ General (4)                       AWS (3)                      Quintum (1)
+        │                               │                               │
+        │                               │                               │
+┌───────┴────────┐            ┌─────────┴─────────┐           ┌─────────────┐
+│ 108.61.70.46   │            │  52.28.165.40     │           │149.12.160.10│
+│ 157.90.193.196 │            │  52.57.172.184    │           │             │
+│ 51.77.77.223   │            │  35.156.119.128   │           │ E.164 Format│
+│ 95.217.90.212  │            │                   │           │ +1234567890 │
+│                │            │  G.729 Primary    │           │             │
+│ All Codecs     │            │                   │           │ G.729, G.711│
+└───────┬────────┘            └─────────┬─────────┘           └──────┬──────┘
+        │                               │                             │
+        │                               │                             │
+        └───────────────────────────────┼─────────────────────────────┘
+                                        │
+                                        │ Port 5060/UDP
+                                        ▼
+                        ╔═══════════════════════════════╗
+                        ║   YOUR ASTERISK SERVER        ║
+                        ║   IP: 167.172.170.88         ║
+                        ║   Port: 5060 (SIP)           ║
+                        ║   RTP: 10000-20000           ║
+                        ╚═══════════════════════════════╝
+                                        │
+                                        │
+                        ┌───────────────┴───────────────┐
+                        │                               │
+                        ▼                               ▼
+                [from-trunk]                    [from-trunk-e164]
+             Standard Context                   E.164 Context
+                        │                               │
+                        │    Set Tracking Variables     │
+                        │    • IVR_CALL_ID              │
+                        │    • IVR_SUPPLIER             │
+                        │    • IVR_START_TIME           │
+                        │                               │
+                        └───────────────┬───────────────┘
+                                        │
+                                        ▼
+                                 ┌──────────┐
+                                 │ Answer() │
+                                 └─────┬────┘
+                                        │
+                                        ▼
+                                ┌─────────────┐
+                                │  IVR Menu   │
+                                │  [ivr-main] │
+                                └──────┬──────┘
+                                        │
+                        ┌───────────────┼───────────────┐
+                        │               │               │
+                        ▼               ▼               ▼
+                   [Option 1]      [Option 2]      [Option 3]
+                     Sales          Support         Billing
+                        │               │               │
+                        ▼               ▼               ▼
+                  Dial(SIP/1000)  Dial(SIP/1001)   Playback()
+                        │               │               │
+                        └───────────────┴───────────────┘
+                                        │
+                                        ▼
+                        ╔═══════════════════════════════╗
+                        ║  ASTERISK MANAGER INTERFACE  ║
+                        ║          (AMI)               ║
+                        ╚═══════════════════════════════╝
+                                        │
+                                        │ Events via TCP 5038
+                                        ▼
+                        ╔═══════════════════════════════╗
+                        ║    NODE.JS BACKEND SERVER    ║
+                        ║    asteriskService.js        ║
+                        ║                              ║
+                        ║  • Captures call events      ║
+                        ║  • Processes call data       ║
+                        ║  • Calculates revenue        ║
+                        ║  • Stores in MongoDB         ║
+                        ╚═══════════════════════════════╝
+                                        │
+                        ┌───────────────┼───────────────┐
+                        │               │               │
+                        ▼               ▼               ▼
+                 ┌──────────┐   ┌───────────┐   ┌──────────┐
+                 │ MongoDB  │   │ WebSocket │   │   API    │
+                 │ Database │   │  Server   │   │ REST API │
+                 └──────────┘   └─────┬─────┘   └─────┬────┘
+                                       │               │
+                                       │               │
+                        ┌──────────────┴───────────────┘
+                        │
+                        ▼
+                ╔═══════════════════════════════════════╗
+                ║   NEXT.JS FRONTEND DASHBOARD          ║
+                ║   (Real-time UI)                     ║
+                ║                                       ║
+                ║  📊 Dashboard - Live call stats      ║
+                ║  📞 Active Calls - Real-time view    ║
+                ║  💰 Revenue - Analytics & trends     ║
+                ║  📋 History - Call records           ║
+                ╚═══════════════════════════════════════╝
+                                        │
+                                        ▼
+                              👤 Client/User Browser
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                          CODEC NEGOTIATION FLOW                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Supplier sends INVITE with codec list
+            │
+            ▼
+    Asterisk receives INVITE
+            │
+            ▼
+    Check trunk configuration
+            │
+            ├─→ Group 1: Try ulaw, alaw, gsm, g729
+            ├─→ Group 2: Try g729 first, then gsm, ulaw, alaw
+            └─→ Group 3: Try g729, then ulaw, alaw
+            │
+            ▼
+    Select common codec
+            │
+            ▼
+    Send 200 OK with chosen codec
+            │
+            ▼
+    Establish RTP media stream (ports 10000-20000)
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                           FIREWALL CONFIGURATION                             ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+                            INTERNET
+                               │
+                               │
+                    ┌──────────┴──────────┐
+                    │   FIREWALL (UFW)    │
+                    │                     │
+                    │  Allow Rules:       │
+                    │  • 8 Supplier IPs   │
+                    │  • Port 5060/UDP    │
+                    │  • Ports 10K-20K    │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  167.172.170.88     │
+                    │  Asterisk Server    │
+                    └─────────────────────┘
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                          CALL EVENT TRACKING                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Call arrives → Newchannel event → Creates call record in DB
+     │
+     ▼
+Call rings → Dial event → Updates status to 'ringing'
+     │
+     ▼
+Call answered → Answer event → Updates status to 'answered'
+     │
+     ▼
+Calls connected → Bridge event → Updates status to 'connected'
+     │
+     ▼
+IVR option selected → VarSet event → Stores IVR selection
+     │
+     ▼
+Call ends → Hangup event → Calculates duration & revenue
+     │
+     ▼
+Stored in MongoDB → Available in dashboard & API
+
