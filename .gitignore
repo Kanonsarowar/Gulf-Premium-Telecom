@@ -34,3 +34,26 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Asterisk sensitive data
+# DO NOT commit these if they contain real credentials
+**/pjsip.conf.production
+**/extensions.conf.production
+**/*-backup/
+**/secrets/
+*.key
+*.crt
+
+# Asterisk logs and recordings
+/var/log/asterisk/
+/var/spool/asterisk/
+*.wav
+*.mp3
+*.gsm
+*.pcm
+
+# Temporary files
+*.tmp
+*.swp
+*~
+.asterisk_history
