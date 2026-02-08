@@ -37,7 +37,15 @@ This repository contains production-ready Asterisk PBX configuration for handlin
 
 ### 2. **Inbound Call Handling**
 - Automatic DID (Direct Inward Dial) routing
-- Multi-level IVR (Interactive Voice Response)
+- Multi-level IVR (Interactive Voice Response) with 9 menu options:
+  - **1** - Sales Department
+  - **2** - Technical Support
+  - **3** - Billing Department
+  - **4** - VIP Support
+  - **5** - Account Management
+  - **6** - Emergency Support
+  - **0** - Operator/Receptionist
+  - **9** - Directory Access
 - Queue-based call distribution
 - Call recording capabilities
 

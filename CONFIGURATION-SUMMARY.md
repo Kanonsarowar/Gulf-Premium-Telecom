@@ -75,7 +75,15 @@ Gulf-Premium-Telecom/
 **Key Features**:
 - `from-upstream` context: Entry point for all inbound calls
 - `did-routing` context: Route based on DID (phone number)
-- `ivr-main` context: Main IVR menu
+- `ivr-main` context: Main IVR menu with options 0-6 and 9
+  - Option 1: Sales
+  - Option 2: Support
+  - Option 3: Billing
+  - Option 4: VIP Support
+  - Option 5: Account Management
+  - Option 6: Emergency Support
+  - Option 0: Operator
+  - Option 9: Directory
 - `queue-*` contexts: Route to call center queues
 - Call logging and CDR tracking
 - Error handling

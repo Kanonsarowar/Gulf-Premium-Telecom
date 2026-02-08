@@ -178,6 +178,23 @@ asterisk -rx "module reload"
 ```bash
 asterisk -rx "dialplan show from-upstream"
 asterisk -rx "dialplan show did-routing"
+asterisk -rx "dialplan show ivr-main"
+```
+
+### Test IVR Menu
+```bash
+# View IVR menu dialplan
+asterisk -rx "dialplan show ivr-main"
+
+# IVR Menu Options:
+# 1 - Sales
+# 2 - Support
+# 3 - Billing
+# 4 - VIP Support
+# 5 - Account Management
+# 6 - Emergency Support
+# 0 - Operator
+# 9 - Directory
 ```
 
 ### Check Module Status
