@@ -241,8 +241,8 @@ echo ""
 echo -e "${BLUE}[9/10] Checking Recent Errors...${NC}"
 
 if [ -f /var/log/asterisk/full ]; then
-    ERROR_COUNT=$(grep -c "ERROR" /var/log/asterisk/full 2>/dev/null | tail -100)
-    echo "  Recent errors in log: checking last 100 lines..."
+    ERROR_COUNT=$(tail -100 /var/log/asterisk/full 2>/dev/null | grep -c "ERROR")
+    echo "  Recent errors in last 100 log lines: $ERROR_COUNT"
     
     RECENT_ERRORS=$(grep "ERROR\|WARNING" /var/log/asterisk/full 2>/dev/null | tail -5)
     if [ -n "$RECENT_ERRORS" ]; then
