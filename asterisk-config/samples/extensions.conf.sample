@@ -1,0 +1,281 @@
+# ============================================================================
+# Sample Dialplan Configurations - Quick Reference
+# ============================================================================
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 1: Simple IVR with 2 Options
+# ------------------------------------------------------------------------------
+
+[ivr-simple]
+exten => s,1,NoOp(Simple IVR)
+ same => n,Answer()
+ same => n,Background(welcome)
+ same => n,Background(press-1&or&press-2)
+ same => n,WaitExten(10)
+
+exten => 1,1,Dial(PJSIP/+1234567890@twilio-trunk,60)
+ same => n,Hangup()
+
+exten => 2,1,Dial(PJSIP/+0987654321@twilio-trunk,60)
+ same => n,Hangup()
+
+exten => i,1,Playback(invalid)
+ same => n,Goto(s,1)
+
+exten => t,1,Playback(goodbye)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 2: Time-Based Routing
+# ------------------------------------------------------------------------------
+
+[time-based-routing]
+exten => s,1,NoOp(Time-based routing)
+ same => n,GotoIfTime(9:00-17:00,mon-fri,*,*?business_hours)
+ same => n,GotoIfTime(9:00-13:00,sat,*,*?business_hours)
+ same => n,Goto(after_hours)
+
+ same => n(business_hours),Playback(office-is-open)
+ same => n,Goto(ivr-main,s,1)
+
+ same => n(after_hours),Playback(office-closed)
+ same => n,Voicemail(100@default,u)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 3: DID-Based Routing
+# ------------------------------------------------------------------------------
+
+[from-carriers]
+; Route based on dialed DID
+exten => _+1555100XXXX,1,NoOp(Sales DID)
+ same => n,Set(DEPARTMENT=Sales)
+ same => n,Goto(internal-extensions,100,1)
+
+exten => _+1555200XXXX,1,NoOp(Support DID)
+ same => n,Set(DEPARTMENT=Support)
+ same => n,Goto(internal-extensions,200,1)
+
+exten => _+1555300XXXX,1,NoOp(Billing DID)
+ same => n,Set(DEPARTMENT=Billing)
+ same => n,Goto(internal-extensions,300,1)
+
+; Default - send to IVR
+exten => _X.,1,NoOp(Default routing)
+ same => n,Goto(ivr-main,s,1)
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 4: Ring Group (Hunt Group)
+# ------------------------------------------------------------------------------
+
+[ring-group-sales]
+exten => 100,1,NoOp(Sales Ring Group)
+ same => n,Set(CALLERID(num)=${TWILIO_CALLER_ID})
+ ; Ring all 3 numbers simultaneously for 30 seconds
+ same => n,Dial(PJSIP/+1234567100@twilio-trunk&PJSIP/+1234567101@twilio-trunk&PJSIP/+1234567102@twilio-trunk,30,t)
+ same => n,GotoIf($["${DIALSTATUS}" = "ANSWER"]?answered)
+ same => n,Voicemail(100@default,u)
+ same => n,Hangup()
+ same => n(answered),Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 5: Sequential Ring (Try one after another)
+# ------------------------------------------------------------------------------
+
+[sequential-ring]
+exten => 200,1,NoOp(Sequential Ring)
+ same => n,Set(CALLERID(num)=${TWILIO_CALLER_ID})
+ ; Try first number for 20 seconds
+ same => n,Dial(PJSIP/+1234567200@twilio-trunk,20,t)
+ same => n,GotoIf($["${DIALSTATUS}" = "ANSWER"]?answered)
+ ; If no answer, try second number
+ same => n,Dial(PJSIP/+1234567201@twilio-trunk,20,t)
+ same => n,GotoIf($["${DIALSTATUS}" = "ANSWER"]?answered)
+ ; If still no answer, try third number
+ same => n,Dial(PJSIP/+1234567202@twilio-trunk,20,t)
+ same => n,GotoIf($["${DIALSTATUS}" = "ANSWER"]?answered)
+ ; All failed, go to voicemail
+ same => n,Voicemail(200@default,u)
+ same => n,Hangup()
+ same => n(answered),Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 6: Callback Queue (Call Back When Available)
+# ------------------------------------------------------------------------------
+
+[callback-queue]
+exten => s,1,NoOp(Callback Queue)
+ same => n,Answer()
+ same => n,Playback(all-agents-busy)
+ same => n,Playback(pls-hold-while-try)
+ same => n,Set(QUEUE_MAX_WAIT=300)  ; 5 minutes max
+ same => n,Queue(support,t,,,${QUEUE_MAX_WAIT})
+ same => n,GotoIf($["${QUEUESTATUS}" = "TIMEOUT"]?timeout)
+ same => n,Hangup()
+ 
+ same => n(timeout),Playback(sorry-youre-having-problems)
+ same => n,Voicemail(200@default,u)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 7: Call Recording with Announcement
+# ------------------------------------------------------------------------------
+
+[recorded-call]
+exten => _X.,1,NoOp(Call with recording)
+ same => n,Answer()
+ same => n,Playback(this-call-may-be-monitored)
+ same => n,Wait(1)
+ ; Start recording (both directions)
+ same => n,Set(RECORDING_FILE=${UNIQUEID}-${EXTEN})
+ same => n,MixMonitor(/var/spool/asterisk/monitor/${RECORDING_FILE}.wav,b)
+ same => n,Dial(PJSIP/${EXTEN}@twilio-trunk,60,t)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 8: Language Selection IVR
+# ------------------------------------------------------------------------------
+
+[language-select]
+exten => s,1,NoOp(Language Selection)
+ same => n,Answer()
+ same => n,Set(TIMEOUT(response)=10)
+ 
+ ; English prompt
+ same => n,Background(press-1&for&english)
+ same => n,Wait(1)
+ ; Arabic prompt (if available)
+ same => n,Background(custom/press-2-for-arabic)
+ same => n,WaitExten(10)
+
+exten => 1,1,NoOp(English selected)
+ same => n,Set(CHANNEL(language)=en)
+ same => n,Goto(ivr-main,s,1)
+
+exten => 2,1,NoOp(Arabic selected)
+ same => n,Set(CHANNEL(language)=ar)
+ same => n,Goto(ivr-main-ar,s,1)
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 9: Emergency/Priority Routing
+# ------------------------------------------------------------------------------
+
+[emergency-routing]
+exten => 911,1,NoOp(Emergency Call)
+ same => n,Answer()
+ same => n,Playback(silence/1)
+ ; Set highest priority
+ same => n,Set(CHANNEL(tonezone)=us)
+ ; Dial emergency services via specific trunk
+ same => n,Dial(PJSIP/911@emergency-trunk,300,tT)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 10: CallerID Blacklist
+# ------------------------------------------------------------------------------
+
+[blacklist-check]
+exten => _X.,1,NoOp(Checking blacklist for ${CALLERID(num)})
+ ; Check if caller is blacklisted (using database)
+ same => n,Set(BLACKLISTED=${DB(blacklist/${CALLERID(num)})})
+ same => n,GotoIf($["${BLACKLISTED}" = "1"]?blocked)
+ ; Not blacklisted, proceed
+ same => n,Goto(ivr-main,s,1)
+ 
+ same => n(blocked),NoOp(Blocked caller: ${CALLERID(num)})
+ same => n,Playback(ss-noservice)
+ same => n,Hangup()
+
+; Add number to blacklist:
+; asterisk -rx "database put blacklist +1234567890 1"
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 11: Conference Bridge
+# ------------------------------------------------------------------------------
+
+[conference]
+exten => 5000,1,NoOp(Conference Bridge)
+ same => n,Answer()
+ same => n,Playback(conf-entering)
+ same => n,ConfBridge(5000)
+ same => n,Hangup()
+
+; Admin access with PIN
+exten => 5001,1,NoOp(Admin Conference)
+ same => n,Answer()
+ same => n,Authenticate(1234)
+ same => n,ConfBridge(5000,admin_menu)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 12: Voicemail Direct Access
+# ------------------------------------------------------------------------------
+
+[voicemail-access]
+exten => *98,1,NoOp(Voicemail Access)
+ same => n,Answer()
+ same => n,Wait(1)
+ same => n,VoiceMailMain()
+ same => n,Hangup()
+
+; Specific mailbox
+exten => *98100,1,VoiceMailMain(100@default)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 13: Speed Dial
+# ------------------------------------------------------------------------------
+
+[speed-dial]
+exten => *1,1,Dial(PJSIP/+1234567890@twilio-trunk,60)
+exten => *2,1,Dial(PJSIP/+0987654321@twilio-trunk,60)
+exten => *3,1,Dial(PJSIP/+1122334455@twilio-trunk,60)
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 14: Call Forwarding
+# ------------------------------------------------------------------------------
+
+[call-forward]
+exten => *72,1,NoOp(Activate Call Forwarding)
+ same => n,Answer()
+ same => n,Read(FORWARD_NUM,please-enter-your&phone-number,10)
+ same => n,Set(DB(cfwd/${CALLERID(num)})=${FORWARD_NUM})
+ same => n,Playback(call-fwd-on)
+ same => n,Hangup()
+
+exten => *73,1,NoOp(Deactivate Call Forwarding)
+ same => n,Answer()
+ same => n,DBdel(cfwd/${CALLERID(num)})
+ same => n,Playback(call-fwd-cancelled)
+ same => n,Hangup()
+
+# Check for forwarding
+[check-forward]
+exten => _X.,1,NoOp(Checking for call forward)
+ same => n,Set(FORWARD=${DB(cfwd/${EXTEN})})
+ same => n,GotoIf($["${FORWARD}" != ""]?forward:normal)
+ 
+ same => n(forward),Dial(PJSIP/${FORWARD}@twilio-trunk,60)
+ same => n,Hangup()
+ 
+ same => n(normal),Dial(PJSIP/${EXTEN},30)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 15: Outbound with Prefix Stripping
+# ------------------------------------------------------------------------------
+
+[outbound-with-prefix]
+; Strip leading 9 for outside line
+exten => _9NXXNXXXXXX,1,NoOp(Outbound with prefix 9)
+ same => n,Set(OUTNUM=${EXTEN:1})  ; Remove first digit
+ same => n,Set(CALLERID(num)=${TWILIO_CALLER_ID})
+ same => n,Dial(PJSIP/${OUTNUM}@twilio-trunk,120)
+ same => n,Hangup()
+
+# ------------------------------------------------------------------------------
+# NOTES
+# ------------------------------------------------------------------------------
+# - Test dialplan: asterisk -rx "dialplan show context-name"
+# - Reload: asterisk -rx "dialplan reload"
+# - Debug: asterisk -rvvv

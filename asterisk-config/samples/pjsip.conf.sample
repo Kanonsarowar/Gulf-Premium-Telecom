@@ -1,0 +1,236 @@
+# ============================================================================
+# Sample PJSIP Configuration - Quick Reference
+# ============================================================================
+# This file provides example configurations for common scenarios
+# ============================================================================
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 1: Adding a New Carrier Trunk
+# ------------------------------------------------------------------------------
+
+# Step 1: Add ACL for carrier IP range
+[acl-carrier3]
+type=acl
+deny=0.0.0.0/0
+permit=192.0.2.0/24
+permit=192.0.2.50       # Single IP
+
+# Step 2: Add endpoint
+[carrier3-trunk]
+type=endpoint
+(carrier-endpoint-template)
+acl=acl-carrier3
+set_var=CARRIER=CARRIER3
+
+# Step 3: Add identify section
+[carrier3-identify]
+type=identify
+endpoint=carrier3-trunk
+match=192.0.2.0/24
+match=192.0.2.50
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 2: Carrier with Multiple IP Addresses
+# ------------------------------------------------------------------------------
+
+[acl-carrier-multi]
+type=acl
+deny=0.0.0.0/0
+permit=203.0.113.10
+permit=203.0.113.11
+permit=203.0.113.12
+permit=198.51.100.0/28
+
+[carrier-multi-trunk]
+type=endpoint
+(carrier-endpoint-template)
+acl=acl-carrier-multi
+set_var=CARRIER=CARRIER_MULTI
+
+[carrier-multi-identify]
+type=identify
+endpoint=carrier-multi-trunk
+match=203.0.113.10
+match=203.0.113.11
+match=203.0.113.12
+match=198.51.100.0/28
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 3: Carrier with Custom Codec Preferences
+# ------------------------------------------------------------------------------
+
+[carrier-g729-trunk]
+type=endpoint
+context=from-carriers
+dtmf_mode=rfc4733
+disallow=all
+allow=g729          # Prefer G.729
+allow=ulaw
+allow=alaw
+direct_media=no
+trust_id_inbound=yes
+rtp_symmetric=yes
+force_rport=yes
+acl=acl-carrier4
+set_var=CARRIER=CARRIER4
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 4: Twilio with Registration (if required)
+# ------------------------------------------------------------------------------
+
+[twilio-with-reg]
+type=registration
+outbound_auth=twilio-auth
+server_uri=sip:yourname.pstn.twilio.com
+client_uri=sip:username@yourname.pstn.twilio.com
+contact_user=username
+retry_interval=60
+forbidden_retry_interval=600
+expiration=3600
+max_retries=10
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 5: Alternative SIP Provider (not Twilio)
+# ------------------------------------------------------------------------------
+
+[provider-alt]
+type=endpoint
+context=from-provider-alt
+aors=provider-alt
+outbound_auth=provider-alt-auth
+disallow=all
+allow=ulaw
+allow=alaw
+from_user=your-username
+from_domain=sip.provider.com
+direct_media=no
+rtp_symmetric=yes
+force_rport=yes
+dtmf_mode=rfc4733
+
+[provider-alt]
+type=aor
+contact=sip:sip.provider.com
+qualify_frequency=60
+
+[provider-alt-auth]
+type=auth
+auth_type=userpass
+username=your-username
+password=your-password
+
+[provider-alt-identify]
+type=identify
+endpoint=provider-alt
+match=203.0.113.0/24
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 6: Internal SIP Extension (if needed)
+# ------------------------------------------------------------------------------
+
+[100]
+type=endpoint
+context=internal
+aors=100
+auth=100
+disallow=all
+allow=ulaw
+allow=alaw
+allow=g722
+direct_media=no
+callerid=Sales <100>
+
+[100]
+type=aor
+max_contacts=1
+remove_existing=yes
+
+[100]
+type=auth
+auth_type=userpass
+username=100
+password=SecurePassword123
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 7: Carrier with T.38 Fax Support
+# ------------------------------------------------------------------------------
+
+[carrier-fax-trunk]
+type=endpoint
+(carrier-endpoint-template)
+acl=acl-carrier-fax
+set_var=CARRIER=CARRIER_FAX
+t38_udptl=yes
+t38_udptl_ec=redundancy
+t38_udptl_maxdatagram=400
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 8: Trunk with SIP Header Manipulation
+# ------------------------------------------------------------------------------
+
+[carrier-custom-headers]
+type=endpoint
+(carrier-endpoint-template)
+acl=acl-carrier-custom
+set_var=CARRIER=CARRIER_CUSTOM
+set_var=SIPADDHEADER=X-Custom-Header: Value
+trust_id_inbound=yes
+trust_id_outbound=yes
+send_pai=yes
+send_rpid=yes
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 9: IPv6 Carrier Connection
+# ------------------------------------------------------------------------------
+
+[transport-udp6]
+type=transport
+protocol=udp
+bind=[::]:5060
+
+[carrier-ipv6-trunk]
+type=endpoint
+(carrier-endpoint-template)
+transport=transport-udp6
+set_var=CARRIER=CARRIER_IPV6
+
+[carrier-ipv6-identify]
+type=identify
+endpoint=carrier-ipv6-trunk
+match=2001:db8::/32
+
+# ------------------------------------------------------------------------------
+# EXAMPLE 10: High-Volume Carrier with Optimizations
+# ------------------------------------------------------------------------------
+
+[carrier-highvolume-trunk]
+type=endpoint
+context=from-carriers
+dtmf_mode=rfc4733
+disallow=all
+allow=ulaw
+allow=alaw
+direct_media=no
+trust_id_inbound=yes
+rtp_symmetric=yes
+force_rport=yes
+rewrite_contact=yes
+# Performance optimizations
+media_encryption=no
+use_avpf=no
+rtcp_mux=no
+bundle=no
+timers=no
+# Longer timeouts for stability
+rtp_timeout=300
+rtp_timeout_hold=600
+set_var=CARRIER=CARRIER_HV
+acl=acl-carrier-hv
+
+# ------------------------------------------------------------------------------
+# NOTES
+# ------------------------------------------------------------------------------
+# - Always test configuration after changes: asterisk -rx "pjsip reload"
+# - Verify endpoints: asterisk -rx "pjsip show endpoints"
+# - Check for errors: tail -f /var/log/asterisk/messages
+# - Enable debug: asterisk -rx "pjsip set logger on"
