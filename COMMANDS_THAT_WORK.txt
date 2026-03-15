@@ -1,0 +1,69 @@
+================================================================================
+  GULF PREMIUM TELECOM - COMMANDS THAT WORK RIGHT NOW
+================================================================================
+
+Your Issue:
+-----------
+You tried to run commands but got 404 errors. This is because the files
+are on branch "copilot/build-asterisk-inbound-sip", not "main" yet.
+
+================================================================================
+SOLUTION: Use these working commands
+================================================================================
+
+YOUR VPS SETUP (Asterisk already installed):
+--------------------------------------------
+
+OPTION 1: Clone repository first (RECOMMENDED)
+```
+git clone -b copilot/build-asterisk-inbound-sip https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git
+cd Gulf-Premium-Telecom
+sudo ./vps-install-quick.sh
+```
+
+OPTION 2: Direct curl install
+```
+curl -fsSL https://raw.githubusercontent.com/Kanonsarowar/Gulf-Premium-Telecom/copilot/build-asterisk-inbound-sip/vps-install-quick.sh | sudo bash
+```
+
+Time: 5-10 minutes
+What it installs: Node.js, MongoDB, Application, 8 SIP Trunks, Firewall, Services
+
+================================================================================
+
+After installation, access at:
+------------------------------
+Dashboard:    http://167.172.170.88
+Backend API:  http://167.172.170.88:3001/api
+Health Check: http://167.172.170.88:3001/api/health
+
+================================================================================
+
+Verify installation:
+-------------------
+sudo systemctl status gulf-telecom-backend gulf-telecom-frontend
+sudo asterisk -rx "sip show peers" | grep supplier
+sudo journalctl -u gulf-telecom-backend -f
+
+================================================================================
+
+Your 8 configured SIP trunks:
+----------------------------
+108.61.70.46     → supplier1-trunk1
+157.90.193.196   → supplier1-trunk2
+51.77.77.223     → supplier1-trunk3
+95.217.90.212    → supplier1-trunk4
+52.28.165.40     → supplier2-aws1
+52.57.172.184    → supplier2-aws2
+35.156.119.128   → supplier2-aws3
+149.12.160.10    → supplier3-quintum
+
+================================================================================
+
+For more details, read:
+----------------------
+DEPLOY_NOW.md     - Complete deployment guide
+START_HERE.md     - Quick reference
+VPS_SETUP.md      - Manual setup steps
+
+================================================================================

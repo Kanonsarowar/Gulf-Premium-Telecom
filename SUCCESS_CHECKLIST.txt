@@ -1,0 +1,128 @@
+╔══════════════════════════════════════════════════════════════════╗
+║           GULF PREMIUM TELECOM - SUCCESS CHECKLIST               ║
+║                  Installation Verification                        ║
+╚══════════════════════════════════════════════════════════════════╝
+
+🎉 CONGRATULATIONS! Your installation is complete!
+
+Use this checklist to verify everything is working correctly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 1: VERIFY SERVICES ARE RUNNING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run this command:
+  sudo systemctl status gulf-telecom-backend gulf-telecom-frontend
+
+✅ Both services should show: "Active: active (running)"
+
+If not running:
+  sudo systemctl start gulf-telecom-backend gulf-telecom-frontend
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 2: VERIFY SIP TRUNKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run this command:
+  sudo asterisk -rx "sip show peers" | grep supplier
+
+✅ Should show 8 trunk lines like:
+  supplier1-trunk1/108.61.70.46
+  supplier1-trunk2/157.90.193.196
+  (and 6 more...)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 3: VERIFY DASHBOARD ACCESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Open browser and go to:
+  http://167.172.170.88
+
+✅ Should see Gulf Premium Telecom Dashboard
+✅ Should show "Active Calls: 0"
+✅ Should show today's statistics
+
+Or test with curl:
+  curl -I http://167.172.170.88
+
+✅ Should return: HTTP/1.1 200 OK
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 4: VERIFY API ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run this command:
+  curl http://167.172.170.88:3001/api/health
+
+✅ Should return: {"status":"ok","timestamp":"..."}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 5: CHECK LOGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run this command:
+  sudo journalctl -u gulf-telecom-backend -n 20
+
+✅ Should see messages like:
+  - "Server listening on port 3001"
+  - "MongoDB connected successfully"
+  - "Connected to Asterisk AMI"
+  - "WebSocket server running on port 3001"
+
+No errors should be present!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ WHAT TO DO IF SOMETHING FAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Services not running:
+  sudo systemctl restart gulf-telecom-backend gulf-telecom-frontend
+  sudo journalctl -u gulf-telecom-backend -n 50
+
+No trunks showing:
+  sudo asterisk -rx "sip show peers"
+  Check /etc/asterisk/sip.conf configuration
+
+Dashboard not loading:
+  sudo systemctl status gulf-telecom-frontend nginx
+  sudo systemctl restart nginx
+
+API not responding:
+  sudo systemctl status gulf-telecom-backend
+  sudo netstat -tlnp | grep 3001
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ NEXT IMMEDIATE STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read POST_INSTALLATION.md for complete next steps
+
+2. Contact all 8 suppliers with your IP: 167.172.170.88
+
+   Suppliers to contact:
+   - 108.61.70.46
+   - 157.90.193.196
+   - 51.77.77.223
+   - 95.217.90.212
+   - 52.28.165.40
+   - 52.57.172.184
+   - 35.156.119.128
+   - 149.12.160.10
+
+3. Request test calls from each supplier
+
+4. Monitor dashboard for incoming calls:
+   http://167.172.170.88
+
+5. Read DAILY_OPERATIONS.md for daily usage commands
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ ALL CHECKS PASSED? CONGRATULATIONS!
+
+Your Gulf Premium Telecom system is fully operational and ready to 
+receive calls and generate revenue!
+
+Next: Read POST_INSTALLATION.md for detailed next steps!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,121 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║            INSTALL-FROM-HERE.SH NOT FOUND? FIX HERE!            ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔴 THE PROBLEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You're getting:
+   sudo: ./install-from-here.sh: command not found
+
+This means you need to pull the latest files!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ THE SOLUTION (3 Commands)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run these 3 commands in your terminal:
+
+┌──────────────────────────────────────────────────────────────────┐
+│ cd ~/Gulf-Premium-Telecom                                        │
+│ git pull origin copilot/build-asterisk-inbound-sip              │
+│ sudo ./install-from-here.sh                                      │
+└──────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 DETAILED STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Go to your repository directory
+   cd ~/Gulf-Premium-Telecom
+
+Step 2: Pull the latest changes
+   git pull origin copilot/build-asterisk-inbound-sip
+
+   This will download install-from-here.sh and other new files!
+
+Step 3: Run the installer
+   sudo ./install-from-here.sh
+
+   Now it will work! ✅
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 VERIFY FILES EXIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After pulling, check that the file exists:
+
+   ls -la install-from-here.sh
+
+Should show:
+   -rwxr-xr-x ... install-from-here.sh
+
+The "x" means it's executable ✅
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 ALTERNATIVE: FRESH CLONE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If git pull doesn't work, do a fresh clone:
+
+┌──────────────────────────────────────────────────────────────────┐
+│ cd ~                                                             │
+│ rm -rf Gulf-Premium-Telecom                                     │
+│ git clone -b copilot/build-asterisk-inbound-sip \              │
+│   https://github.com/Kanonsarowar/Gulf-Premium-Telecom.git     │
+│ cd Gulf-Premium-Telecom                                         │
+│ sudo ./install-from-here.sh                                     │
+└──────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❓ TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problem: "Already up to date" but file still missing?
+Solution: You might be on wrong branch. Run:
+   git checkout copilot/build-asterisk-inbound-sip
+   git pull
+
+Problem: "Permission denied"?
+Solution: Make file executable:
+   chmod +x install-from-here.sh
+   sudo ./install-from-here.sh
+
+Problem: Still not working?
+Solution: List all files to check:
+   ls -la *.sh
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✨ SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The install-from-here.sh file was added after you cloned the repo.
+
+Just run: git pull origin copilot/build-asterisk-inbound-sip
+
+Then: sudo ./install-from-here.sh
+
+That's it! ✅
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📂 OTHER HELPFUL FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After pulling, you'll also have:
+   ✓ START_HERE_NOW.txt - Quick start guide
+   ✓ QUICK_FIX.txt - Visual guide
+   ✓ FIX_FOR_YOUR_ISSUE.md - Detailed guide
+   ✓ README_FIRST.txt - Original guide
+
+All ready to help you! 🎉
